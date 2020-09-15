@@ -8,7 +8,7 @@ pipeline {
     stages {       
         stage('Prepare') {
             steps {
-                checkout([$class: 'GitSCM',
+                checkout([\$class: 'GitSCM',
                 branches: [[name: "origin/master"]],
                 doGenerateSubmoduleConfigurations: false,
                 submoduleCfg: [],
