@@ -9,7 +9,7 @@ pipeline {
         stage('Prepare') {
             steps {
                 checkout([$class: 'GitSCM',
-                branches: [[name: "origin\master"]],
+                branches: [[name: "origin/master"]],
                 doGenerateSubmoduleConfigurations: false,
                 submoduleCfg: [],
                 userRemoteConfigs: [[
@@ -19,7 +19,7 @@ pipeline {
         }
         stage ('Docker_Build') {
             steps {
-                \\ Build the docker image
+                // Build the docker image
                 sh'''
                     # Build the image
                     $(aws ecr get-login --region eu-west-1 --profile global --no-include-email)
