@@ -1,6 +1,7 @@
 pipeline {
     agent {
-        kubernetes {
+        node {
+            label 'hostname=minikube'
         }
     }
     
