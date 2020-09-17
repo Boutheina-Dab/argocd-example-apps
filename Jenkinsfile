@@ -9,7 +9,7 @@ pipeline {
                 doGenerateSubmoduleConfigurations: false,
                 submoduleCfg: [],
                 userRemoteConfigs: [[
-                    url: 'https: github.com:Boutheina-Dab/argocd-example-apps.git']]
+                    url: 'https://github.com/Boutheina-Dab/argocd-example-apps.git']]
                 ])
             }
         }
