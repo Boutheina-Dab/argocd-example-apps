@@ -10,7 +10,7 @@ RUN apt-get update && \
     gnupg-agent \
     software-properties-common && \
 
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && apt-key fingerprint 0EBFCD88 \
+    curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | sudo apt-key add - && apt-key fingerprint 0EBFCD88 \
     add-apt-repository \
     "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") \
     $(lsb_release -cs) \
