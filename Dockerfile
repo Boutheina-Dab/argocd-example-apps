@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:lts
+FROM node:14-alpine
 USER root
 RUN apt-get update install && VERSION=$(curl --silent "https://api.github.com/repos/argoproj/argo-cd/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
 
