@@ -15,12 +15,12 @@ RUN apt-get update && \
     stable" && \
     apt-get update && \
     apt-get -y install docker-ce && \
-    usermod -aG docker jenkins && \
-    chown -R jenkins:jenkins $JENKINS_HOME/
+    usermod -aG docker admin && \
+    chown -R admin:admin $JENKINS_HOME/
 
     apt-get update install && VERSION=$(curl --silent "https://api.github.com/repos/argoproj/argo-cd/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
 
     curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/$VERSION/argocd-linux-amd64
     chmod +x /usr/local/bin/argocd
-USER jenkins
+USER admin
 VOLUME [$JENKINS_HOME, "/var/run/docker.sock"] 
