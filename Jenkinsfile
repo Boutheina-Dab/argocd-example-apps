@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { dockerfile true }
     
     stages {       
         stage('Prepare') {
@@ -13,6 +13,11 @@ pipeline {
                 ])
             }
         }
+        stage('Test') {
+            steps {
+                sh 'argocd version'
+            }
+        }
         
         stage ('Deploy_K8S') {
              steps {
@@ -21,7 +26,9 @@ pipeline {
                         ARGOCD_SERVER="argocd-prod.example.com"
                         APP_NAME="guestbook"
                         CONTAINER="guestbook-ui"
-
+                        
+                        # login to minikube kubernetes cluster
+                          
                         # Customize image 
                         ARGOCD_SERVER=$ARGOCD_SERVER argocd --grpc-web app set $APP_NAME --kustomize-image $IMAGE_DIGEST
                         
