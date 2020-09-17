@@ -16,7 +16,7 @@ pipeline {
         
         stage ('Deploy_K8S') {
              steps {
-                     withCredentials([string(credentialsId: "jenkins-argocd-deploy", variable: 'ARGOCD_AUTH_TOKEN')]) {
+                     withCredentials([string(credentialsId: "argocd-deploy-role", variable: 'ARGOCD_AUTH_TOKEN')]) {
                         sh '''
                         ARGOCD_SERVER="argocd-prod.example.com"
                         APP_NAME="guestbook"
