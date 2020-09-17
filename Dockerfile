@@ -1,4 +1,4 @@
-FROM jenkins/jenkins
+FROM node:14-alpine
 
 USER root
 
