@@ -8,7 +8,7 @@ pipeline {
     //}
     docker {
         image 'maven:3-alpine'
-        label 'my-defined-label'
+        label 'argocd-pod'
         args  '-v /tmp:/tmp'
     }
   }
