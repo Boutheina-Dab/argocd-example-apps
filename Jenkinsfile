@@ -1,30 +1,49 @@
 pipeline {
-  agent {
-    //kubernetes {
-      // label 'argocd-test'
-      // idleMinutes 5  // how long the pod will live after no jobs have run on it
-      //yamlFile 'build-pod.yaml'  // path to the pod definition relative to the root of our project 
-      //defaultContainer 'docker'  // define a default container if more than a few stages use it, will default to jnlp container
-    //}
-    docker {
-        image 'maven:3-alpine'
-        label 'argocd-pod'
-        args  '-v /tmp:/tmp'
-    }
-  }
-  stages {
-    stage('Build') {
-      steps {  // no container directive is needed as the maven container is the default
-        sh "mvn clean install"   
-      }
-    }
-    stage('Build Docker Image') {
-      steps {
-        container('docker') {  
-          sh "docker build -t vividseats/promo-app:dev ."  // when we run docker in this step, we're running it via a shell on the docker build-pod container, 
-          sh "docker push vividseats/promo-app:dev"        // which is just connecting to the host docker deaemon
+    agent { 
+        dockerfile {
+            filename Dockerfile
         }
-      }
     }
-  }
+     
+    
+    stages {       
+        stage('Prepare') {
+            steps {
+                checkout([$class: 'GitSCM',
+                branches: [[name: "origin/master"]],
+                doGenerateSubmoduleConfigurations: false,
+                submoduleCfg: [],
+                userRemoteConfigs: [[
+                    url: 'https://github.com/Boutheina-Dab/argocd-example-apps.git']]
+                ])
+            }
+        }
+        stage('Test') {
+            steps {
+                //sh 'docker version'
+                sh 'argocd version'
+            }
+        }
+        
+        stage ('Deploy_K8S') {
+             steps {
+                     withCredentials([string(credentialsId: "argocd-deply-role", variable: 'ARGOCD_AUTH_TOKEN')]) {
+                        sh '''
+                        ARGOCD_SERVER="argocd-prod.example.com"
+                        APP_NAME="guestbook"
+                        CONTAINER="guestbook-ui"
+                        
+                        # login to minikube kubernetes cluster
+                          
+                        # Customize image 
+                        ARGOCD_SERVER=$ARGOCD_SERVER argocd --grpc-web app set $APP_NAME --kustomize-image $IMAGE_DIGEST
+                        
+                        # Deploy to ArgoCD
+                        ARGOCD_SERVER=$ARGOCD_SERVER argocd --grpc-web app sync $APP_NAME --force
+                        ARGOCD_SERVER=$ARGOCD_SERVER argocd --grpc-web app wait $APP_NAME --timeout 600
+                        '''
+               }
+            }
+        }
+    }
 }
