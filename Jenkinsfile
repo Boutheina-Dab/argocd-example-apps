@@ -1,10 +1,10 @@
 pipeline {
   agent {
     kubernetes {
-      label 'argocd-test'
-      idleMinutes 5  // how long the pod will live after no jobs have run on it
+      // label 'argocd-test'
+      // idleMinutes 5  // how long the pod will live after no jobs have run on it
       yamlFile 'build-pod.yaml'  // path to the pod definition relative to the root of our project 
-      defaultContainer 'maven'  // define a default container if more than a few stages use it, will default to jnlp container
+      defaultContainer 'docker'  // define a default container if more than a few stages use it, will default to jnlp container
     }
   }
   stages {
