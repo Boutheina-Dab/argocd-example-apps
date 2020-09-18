@@ -9,7 +9,8 @@ podTemplate(
         hostPathVolume(mountPath: '/var/run/docker.sock',
         hostPath: '/var/run/docker.sock')
     ],
-    {
+    {   
+        agent { dockerfile true }
         //node = the pod label
         node('argocd-pod'){
             //container = the container label
