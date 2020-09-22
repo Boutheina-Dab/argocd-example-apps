@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        dockerfile true 
+        label "jenkins" 
     }
      
     
@@ -16,13 +16,7 @@ pipeline {
                 ])
             }
         }
-        stage('Test') {
-            steps {
-                sh 'docker version'
-                //sh 'argocd version'
-            }
-        }
-        
+         
         stage ('Deploy_K8S') {
              steps {
                      withCredentials([string(credentialsId: "argocd-deply-role", variable: 'ARGOCD_AUTH_TOKEN')]) {
