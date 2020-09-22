@@ -1,5 +1,6 @@
 pipeline {
-    agent { 
+    agent {
+        dockerfile true 
         docker {
         image 'maven:3-alpine'
         //label 'my-defined-label'
