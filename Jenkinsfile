@@ -1,6 +1,10 @@
 pipeline {
     agent { 
-        dockerfile true
+        docker {
+        image 'maven:3-alpine'
+        label 'my-defined-label'
+        args  '-v /tmp:/tmp'
+        }
     }
      
     
@@ -18,8 +22,8 @@ pipeline {
         }
         stage('Test') {
             steps {
-                //sh 'docker version'
-                sh 'argocd version'
+                sh 'docker version'
+                //sh 'argocd version'
             }
         }
         
